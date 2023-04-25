@@ -1,8 +1,27 @@
-;;; Windows set-up is a little bit different.
-(setq winp (equal system-name "BELLEVUE"))
+;;; ----------------------------------------------------------------------
+;;;
+;;; Package system for Emacs
+;;;
+;;; ----------------------------------------------------------------------
 
+(require 'package)
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/") t)
+;;;(add-to-list 'package-archives
+;;;             '("melpa" . "http://melpa.org/packages/") t)
+;;;(add-to-list 'package-archives
+;;;             '("marmalade" . "http://marmalade-repo.org/packages/"))
+(package-initialize)
 
-(global-set-key "\C-xg" (quote goto-line))
+(setenv "PATH" (concat (getenv "PATH") ":/home/hth/.ghcup/bin"))
+
+(require 'use-package)
+(when (memq window-system '(mac ns x))
+  (progn
+    (exec-path-from-shell-initialize)
+    (setq exec-path (split-string (getenv "PATH") path-separator))))
+
+;;; (global-set-key "\C-xg" (quote goto-line))
 (global-set-key "\C-x\r\r" (quote compile))
 (global-set-key [f7] (quote compare-windows))
 (global-set-key [f5] (quote next-error))
@@ -34,25 +53,41 @@
 
 (load-theme 'zenburn t)
 
-;;; ----------------------------------------------------------------------
-;;;
-;;; Package system for Emacs
-;;;
-;;; ----------------------------------------------------------------------
-
-(require 'package)
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/") t)
-;;;(add-to-list 'package-archives
-;;;             '("melpa" . "http://melpa.org/packages/") t)
-;;;(add-to-list 'package-archives
-;;;             '("marmalade" . "http://marmalade-repo.org/packages/"))
-(package-initialize)
+(use-package flycheck)
+(use-package lsp-mode)
 
 (when (memq window-system '(mac ns))
   (progn
     (exec-path-from-shell-initialize)
     (setq exec-path (split-string (getenv "PATH") path-separator))))
+
+(use-package company
+  :init
+  ;; (global-company-mode '(kotlin-mode))
+  (add-hook 'cmake-mode-hook 'kotlin-mode 'text-mode)
+
+  ;; set the completion to begin at once. Not needed, but handy!
+  (setq company-idle-delay 0
+	company-echo-delay 0
+	company-minimum-prefix-length 1)
+
+  ;; Not strictly necessary. Just gives a hotkey to complete when it doesnt start automatically
+  :bind
+  ([(control return)] . company-complete))
+
+(use-package kotlin-mode
+  :hook
+  (kotlin-mode . lsp))
+
+;;; maven style errors
+(add-to-list 'compilation-error-regexp-alist
+             'maven)
+(add-to-list
+ 'compilation-error-regexp-alist-alist
+ '(maven
+   "\\[ERROR\\] \\(.+?\\):\\[\\([0-9]+\\),\\([0-9]+\\)\\].\*" 1 2 3))
+
+(scroll-bar-mode 0)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -64,6 +99,7 @@
  '(confirm-kill-emacs 'yes-or-no-p)
  '(exec-path
    '("/usr/bin" "/bin" "/usr/sbin" "/sbin" "/usr/local/bin" "/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9" "/Applications/Emacs.app/Contents/MacOS/libexec-x86_64-10_9" "/Applications/Emacs.app/Contents/MacOS/libexec" "/Applications/Emacs.app/Contents/MacOS/bin"))
+ '(flycheck-python-pyright-executable "/opt/homebrew/bin/pyright")
  '(gas-argument-column 22)
  '(git-commit-summary-max-length 50)
  '(global-ethan-wspace-mode t)
@@ -72,12 +108,19 @@
  '(haskell-process-auto-import-loaded-modules t)
  '(haskell-process-load-or-reload-prompt t)
  '(haskell-process-log t)
- '(haskell-process-path-cabal "~/.cabal/bin/cabal")
- '(haskell-process-path-ghci "/usr/local/bin/ghci-8.4.3")
+ '(haskell-process-path-cabal "~/.ghcup/bin/cabal")
+ '(haskell-process-path-ghci "~/.ghcup/bin/ghci")
  '(haskell-process-suggest-remove-import-lines t)
  '(haskell-process-type 'cabal-repl)
- '(haskell-program-name "/usr/local/bin/ghci")
+ '(haskell-process-suggest-remove-import-lines t)
+ '(haskell-process-type 'cabal-repl)
+ '(haskell-program-name "~/.ghcup/bin/ghci")
  '(haskell-tags-on-save nil)
+ '(kotlin-command "kotlinc")
+ '(kotlin-tab-width 2)
+ '(menu-bar-mode nil)
+ '(mode-require-final-newline nil)
+ '(org-agenda-files '("~/projects/org/canada.org" "~/projects/org/company.org"))
  '(ignored-local-variable-values
    '((vc-prepare-patches-separately)
      (diff-add-log-use-relative-names . t)
@@ -87,7 +130,7 @@
  '(mode-require-final-newline nil)
  '(org-agenda-files '("~/projects/org/canada.org" "~/projects/org/company.org"))
  '(package-selected-packages
-   '(rust-mode cargo-mode cargo zenburn-theme undo-tree org-pomodoro markdown-mode magit lua-mode haskell-mode go-rename go-guru go-autocomplete exec-path-from-shell ethan-wspace elm-mode))
+   '(lsp-pyright elpy rust-mode projectile company lsp-treemacs lsp-ui flycheck lsp-mode use-package kotlin-mode format-all undo-tree org-pomodoro markdown-mode magit cargo-mode cargo zenburn-theme undo-tree org-pomodoro markdown-mode magit lua-mode haskell-mode go-rename go-guru go-autocomplete exec-path-from-shell ethan-wspace elm-mode))
  '(ps-landscape-mode t)
  '(ps-number-of-columns 2)
  '(ps-print-color-p t)
@@ -101,6 +144,9 @@
  '(visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow)))
 
 (put 'downcase-region 'disabled nil)
+
+;;; Keep case with dynamic-abbrev
+(setq case-replace nil)
 
 ;;; ----------------------------------------------------------------------
 ;;;
@@ -151,6 +197,9 @@
 (add-hook 'org-mode-hook 'visual-line-mode)
 ;;;(add-hook 'org-mode-hook (setq-default word-wrap t))  ;; <-- does not work??
 ;;;(add-hook 'org-mode-hook 'toggle-word-wrap)
+
+(dolist (hook '(text-mode-hook gas-mode-mode))
+  (add-hook hook (lambda () (flyspell-mode 1))))
 
 (eval-after-load "flyspell"
     '(progn
@@ -231,3 +280,24 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+;;; Enable additional Python
+(elpy-enable)
+(setq python-shell-interpreter (expand-file-name "~/.local/bin/docker-analyst-python.sh"))
+
+(use-package lsp-pyright
+  :ensure t
+  :hook (python-mode . (lambda ()
+                          (require 'lsp-pyright)
+                          (lsp-deferred))))  ; or lsp
+
+;; Enable Flycheck
+(when (require 'flycheck nil t)
+  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+  (add-hook 'elpy-mode-hook 'flycheck-mode))
+
+(lsp-register-client
+  (make-lsp-client
+   :new-connection (lsp-stdio-connection '("/Users/hth/projects/pygls/env/bin/python" "/Users/hth/projects/pygls/examples/hello-world/main.py"))
+   :major-modes '(text-mode)
+   :server-id 'hello-world-pygls-example))
