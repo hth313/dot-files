@@ -28,6 +28,9 @@
 (global-set-key [f6] (quote previous-error))
 (global-set-key [f12] 'compile)
 
+;;; This is a workaround for the svg issue on Emacs for Mac v28
+(add-to-list 'image-types 'svg)
+
 ;;; backup files
 (defvar --backup-directory (concat user-emacs-directory "backups"))
 (if (not (file-exists-p --backup-directory))
@@ -126,7 +129,7 @@
  '(mode-require-final-newline nil)
  '(org-agenda-files '("~/projects/org/canada.org" "~/projects/org/company.org"))
  '(package-selected-packages
-   '(dap-mode helm-xref which-key avy hydra lsp-pyright elpy rust-mode projectile company lsp-treemacs lsp-ui flycheck lsp-mode use-package kotlin-mode format-all undo-tree org-pomodoro markdown-mode magit cargo-mode cargo zenburn-theme undo-tree org-pomodoro markdown-mode magit lua-mode haskell-mode go-rename go-guru go-autocomplete exec-path-from-shell ethan-wspace elm-mode))
+   '(dap-mode helm-xref which-key avy hydra lsp-pyright elpy rust-mode projectile company lsp-treemacs lsp-ui flycheck lsp-mode use-package kotlin-mode format-all undo-tree org-pomodoro markdown-mode magit cargo-mode cargo zenburn-theme lua-mode haskell-mode go-rename go-guru go-autocomplete exec-path-from-shell ethan-wspace elm-mode))
  '(ps-landscape-mode t)
  '(ps-number-of-columns 2)
  '(ps-print-color-p t)
@@ -292,11 +295,11 @@
   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
   (add-hook 'elpy-mode-hook 'flycheck-mode))
 
-(lsp-register-client
-  (make-lsp-client
-   :new-connection (lsp-stdio-connection '("/Users/hth/projects/pygls/env/bin/python" "/Users/hth/projects/pygls/examples/hello-world/main.py"))
-   :major-modes '(text-mode)
-   :server-id 'hello-world-pygls-example))
+;; (lsp-register-client
+;;   (make-lsp-client
+;;    :new-connection (lsp-stdio-connection '("/Users/hth/projects/pygls/env/bin/python" "/Users/hth/projects/pygls/examples/hello-world/main.py"))
+;;    :major-modes '(text-mode)
+;;    :server-id 'hello-world-pygls-example))
 
 ;;; ----------------------------------------------------------------------
 ;;;
@@ -312,11 +315,11 @@
 ;;;  (mapc #'package-install package-selected-packages))
 
 ;; sample `helm' configuration use https://github.com/emacs-helm/helm/ for details
-(helm-mode)
-(require 'helm-xref)
-(define-key global-map [remap find-file] #'helm-find-files)
-(define-key global-map [remap execute-extended-command] #'helm-M-x)
-(define-key global-map [remap switch-to-buffer] #'helm-mini)
+;;;(helm-mode)
+;;;(require 'helm-xref)
+;;;(define-key global-map [remap find-file] #'helm-find-files)
+;;;(define-key global-map [remap execute-extended-command] #'helm-M-x)
+;;;(define-key global-map [remap switch-to-buffer] #'helm-mini)
 
 (which-key-mode)
 (add-hook 'c-mode-hook 'lsp)
