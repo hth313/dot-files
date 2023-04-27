@@ -72,8 +72,9 @@
 	company-minimum-prefix-length 1)
 
   ;; Not strictly necessary. Just gives a hotkey to complete when it doesnt start automatically
-  :bind
-  ([(control return)] . company-complete))
+  :bind ([(control return)] . company-complete)
+  :bind (:map company-active-map ("<tab>" . company-complete-selection))
+  )
 
 (use-package kotlin-mode
   :hook
@@ -112,25 +113,20 @@
  '(haskell-process-path-ghci "~/.ghcup/bin/ghci")
  '(haskell-process-suggest-remove-import-lines t)
  '(haskell-process-type 'cabal-repl)
- '(haskell-process-suggest-remove-import-lines t)
- '(haskell-process-type 'cabal-repl)
  '(haskell-program-name "~/.ghcup/bin/ghci")
  '(haskell-tags-on-save nil)
- '(kotlin-command "kotlinc")
- '(kotlin-tab-width 2)
- '(menu-bar-mode nil)
- '(mode-require-final-newline nil)
- '(org-agenda-files '("~/projects/org/canada.org" "~/projects/org/company.org"))
  '(ignored-local-variable-values
    '((vc-prepare-patches-separately)
      (diff-add-log-use-relative-names . t)
      (vc-git-annotate-switches . "-w")))
  '(inferior-haskell-find-project-root t)
+ '(kotlin-command "kotlinc")
+ '(kotlin-tab-width 2)
  '(menu-bar-mode nil)
  '(mode-require-final-newline nil)
  '(org-agenda-files '("~/projects/org/canada.org" "~/projects/org/company.org"))
  '(package-selected-packages
-   '(lsp-pyright elpy rust-mode projectile company lsp-treemacs lsp-ui flycheck lsp-mode use-package kotlin-mode format-all undo-tree org-pomodoro markdown-mode magit cargo-mode cargo zenburn-theme undo-tree org-pomodoro markdown-mode magit lua-mode haskell-mode go-rename go-guru go-autocomplete exec-path-from-shell ethan-wspace elm-mode))
+   '(dap-mode helm-xref which-key avy hydra lsp-pyright elpy rust-mode projectile company lsp-treemacs lsp-ui flycheck lsp-mode use-package kotlin-mode format-all undo-tree org-pomodoro markdown-mode magit cargo-mode cargo zenburn-theme undo-tree org-pomodoro markdown-mode magit lua-mode haskell-mode go-rename go-guru go-autocomplete exec-path-from-shell ethan-wspace elm-mode))
  '(ps-landscape-mode t)
  '(ps-number-of-columns 2)
  '(ps-print-color-p t)
@@ -301,3 +297,39 @@
    :new-connection (lsp-stdio-connection '("/Users/hth/projects/pygls/env/bin/python" "/Users/hth/projects/pygls/examples/hello-world/main.py"))
    :major-modes '(text-mode)
    :server-id 'hello-world-pygls-example))
+
+;;; ----------------------------------------------------------------------
+;;;
+;;; C/C++ LSP
+;;;
+;;; ----------------------------------------------------------------------
+
+;;;(setq package-selected-packages '(lsp-mode yasnippet lsp-treemacs helm-lsp
+;;;    projectile hydra flycheck company avy which-key helm-xref dap-mode))
+
+;;;(when (cl-find-if-not #'package-installed-p package-selected-packages)
+;;;  (package-refresh-contents)
+;;;  (mapc #'package-install package-selected-packages))
+
+;; sample `helm' configuration use https://github.com/emacs-helm/helm/ for details
+(helm-mode)
+(require 'helm-xref)
+(define-key global-map [remap find-file] #'helm-find-files)
+(define-key global-map [remap execute-extended-command] #'helm-M-x)
+(define-key global-map [remap switch-to-buffer] #'helm-mini)
+
+(which-key-mode)
+(add-hook 'c-mode-hook 'lsp)
+(add-hook 'c++-mode-hook 'lsp)
+
+(setq gc-cons-threshold (* 100 1024 1024)
+      read-process-output-max (* 1024 1024)
+      treemacs-space-between-root-nodes nil
+      company-idle-delay 0.0
+      company-minimum-prefix-length 1
+      lsp-idle-delay 0.1)  ;; clangd is fast
+
+(with-eval-after-load 'lsp-mode
+  (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
+  (require 'dap-cpptools)
+  (yas-global-mode))
