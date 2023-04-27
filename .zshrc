@@ -13,6 +13,11 @@ export HISTFILE=~/.zsh-history
 
 alias config='git --git-dir=$HOME/.cfg --work-tree=$HOME'
 
+export LC_ALL=en_US.UTF-8
+
+export FOENIXMGR=/home/hth/projects/FoenixMgr
+export QSYS_ROOTDIR="/home/hth/intelFPGA_lite/21.1/quartus/sopc_builder/bin"
+
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
