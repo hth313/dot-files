@@ -17,9 +17,7 @@
 
 (require 'use-package)
 (when (memq window-system '(mac ns x))
-  (progn
-    (exec-path-from-shell-initialize)
-    (setq exec-path (split-string (getenv "PATH") path-separator))))
+  (exec-path-from-shell-initialize))
 
 ;;; (global-set-key "\C-xg" (quote goto-line))
 (global-set-key "\C-x\r\r" (quote compile))
@@ -59,11 +57,6 @@
 (use-package flycheck)
 (use-package lsp-mode)
 
-(when (memq window-system '(mac ns))
-  (progn
-    (exec-path-from-shell-initialize)
-    (setq exec-path (split-string (getenv "PATH") path-separator))))
-
 (use-package company
   :init
   ;; (global-company-mode '(kotlin-mode))
@@ -101,9 +94,7 @@
  '(completion-ignored-extensions
    '(".hi" ".p_hi" ".o" ".p_o" "~" ".bin" ".lbin" ".so" ".a" ".ln" ".blg" ".bbl" ".elc" ".lof" ".glo" ".idx" ".lot" ".svn/" ".hg/" ".git/" ".bzr/" "CVS/" "_darcs/" "_MTN/" ".fmt" ".tfm" ".class" ".fas" ".lib" ".mem" ".x86f" ".sparcf" ".dfsl" ".pfsl" ".d64fsl" ".p64fsl" ".lx64fsl" ".lx32fsl" ".dx64fsl" ".dx32fsl" ".fx64fsl" ".fx32fsl" ".sx64fsl" ".sx32fsl" ".wx64fsl" ".wx32fsl" ".fasl" ".ufsl" ".fsl" ".dxl" ".lo" ".la" ".gmo" ".mo" ".toc" ".aux" ".cp" ".fn" ".ky" ".pg" ".tp" ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs" ".pyc" ".pyo" ".dyn_hi" ".dyn_hi-boot" ".dyn_o"))
  '(confirm-kill-emacs 'yes-or-no-p)
- '(exec-path
-   '("/usr/bin" "/bin" "/usr/sbin" "/sbin" "/usr/local/bin" "/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9" "/Applications/Emacs.app/Contents/MacOS/libexec-x86_64-10_9" "/Applications/Emacs.app/Contents/MacOS/libexec" "/Applications/Emacs.app/Contents/MacOS/bin"))
- '(flycheck-python-pyright-executable "/opt/homebrew/bin/pyright")
+  '(flycheck-python-pyright-executable "/opt/homebrew/bin/pyright")
  '(gas-argument-column 22)
  '(git-commit-summary-max-length 50)
  '(global-ethan-wspace-mode t)
@@ -129,7 +120,7 @@
  '(mode-require-final-newline nil)
  '(org-agenda-files '("~/projects/org/canada.org" "~/projects/org/company.org"))
  '(package-selected-packages
-   '(dap-mode helm-xref which-key avy hydra lsp-pyright elpy rust-mode projectile company lsp-treemacs lsp-ui flycheck lsp-mode use-package kotlin-mode format-all undo-tree org-pomodoro markdown-mode magit cargo-mode cargo zenburn-theme lua-mode haskell-mode go-rename go-guru go-autocomplete exec-path-from-shell ethan-wspace elm-mode))
+   '(lsp-java flycheck-kotlin dap-mode helm-xref which-key avy hydra lsp-pyright elpy rust-mode projectile company lsp-treemacs lsp-ui flycheck lsp-mode use-package kotlin-mode format-all undo-tree org-pomodoro markdown-mode magit cargo-mode cargo zenburn-theme lua-mode haskell-mode go-rename go-guru go-autocomplete exec-path-from-shell ethan-wspace elm-mode))
  '(ps-landscape-mode t)
  '(ps-number-of-columns 2)
  '(ps-print-color-p t)
