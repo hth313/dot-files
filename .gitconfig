@@ -1,0 +1,30 @@
+[user]
+        email = hth313@gmail.com
+        name = Håkan Thörngren
+[push]
+        default = simple
+[core]
+        pager = less -F -X -R
+        autocrlf = input
+        excludesfile = /Users/hth/.gitignore_global
+[instaweb]
+        local = true
+        httpd = /usr/local/bin/lighttpd
+        port = 8095
+[alias]
+        st = status -s
+        stu = status -s -uno
+        lol = log --oneline --graph --decorate
+        lol2 = log --graph --pretty=format:\"%C(yellow)%h%Creset%C(cyan)%C(bold)%d%Creset %s %C(cyan)(%cr)%Creset\"
+        lol3 = log --graph --pretty=format:\"%C(yellow)%h%Creset%C(cyan)%C(bold)%d%Creset %C(cyan)(%cr)%Creset %C(green)%ce%Creset %s\"
+        manifest = ls-tree -r master --name-only
+        stash-work = stash --keep-index --include-untracked
+        pl = pull --rebase
+[diff]
+        ignoreSubmodules = dirty
+[difftool "sourcetree"]
+        cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+        path = 
+[mergetool "sourcetree"]
+        cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+        trustExitCode = true
