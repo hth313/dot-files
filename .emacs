@@ -94,7 +94,7 @@
  '(completion-ignored-extensions
    '(".hi" ".p_hi" ".o" ".p_o" "~" ".bin" ".lbin" ".so" ".a" ".ln" ".blg" ".bbl" ".elc" ".lof" ".glo" ".idx" ".lot" ".svn/" ".hg/" ".git/" ".bzr/" "CVS/" "_darcs/" "_MTN/" ".fmt" ".tfm" ".class" ".fas" ".lib" ".mem" ".x86f" ".sparcf" ".dfsl" ".pfsl" ".d64fsl" ".p64fsl" ".lx64fsl" ".lx32fsl" ".dx64fsl" ".dx32fsl" ".fx64fsl" ".fx32fsl" ".sx64fsl" ".sx32fsl" ".wx64fsl" ".wx32fsl" ".fasl" ".ufsl" ".fsl" ".dxl" ".lo" ".la" ".gmo" ".mo" ".toc" ".aux" ".cp" ".fn" ".ky" ".pg" ".tp" ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs" ".pyc" ".pyo" ".dyn_hi" ".dyn_hi-boot" ".dyn_o"))
  '(confirm-kill-emacs 'yes-or-no-p)
-  '(flycheck-python-pyright-executable "/opt/homebrew/bin/pyright")
+ '(flycheck-python-pyright-executable "/opt/homebrew/bin/pyright")
  '(gas-argument-column 22)
  '(git-commit-summary-max-length 50)
  '(global-ethan-wspace-mode t)
@@ -171,7 +171,7 @@
 ;;(add-hook 'haskell-mode-hook
 ;;          (progn (define-key haskell-mode-map (kbd "<f8>") 'haskell-navigate-imports)
 ;;                 (define-key haskell-mode-map (kbd "<f9>") 'haskell-mode-format-imports)))
-
+(add-hook 'haskell-mode-hook #'lsp)
 
 ;;; ----------------------------------------------------------------------
 ;;;
